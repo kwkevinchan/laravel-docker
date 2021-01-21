@@ -1,0 +1,56 @@
+version: "3.7"
+
+networks:
+  traefik_bridge:
+    external: true
+    name: traefik_bridge
+
+services:
+  demo:
+    build:
+      context: ./
+    # image: laravel:demo
+    environment:
+      - UPID=501
+
+      - APP_NAME=Laravel
+      - APP_ENV=local
+      - APP_KEY=base64:kMSAaKAAd3iA6AK726aIavVxu1p9NXSsGxUYWRejtrs=
+      - APP_DEBUG=true
+      - APP_URL=http://localhost
+
+      - LOG_CHANNEL=stderr
+
+      - DB_CONNECTION=mysql
+      - DB_HOST=127.0.0.1
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=
+
+      - CACHE_DRIVER=redis
+      - QUEUE_CONNECTION=sync
+      - SESSION_DRIVER=redis
+      - SESSION_LIFETIME=120
+
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
+
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - traefik_bridge
+
+  nginx:
+    # image: nginx:1.19.6-alpine
+    # image: laravel-nginx:deom
+    build:
+      dockerfile: nginx.Dockerfile
+      context: ./
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.demo.loadbalancer.server.port=80"
+      - "traefik.http.routers.demo.rule=Host(`laravel.test`)"
+    networks:
+      - traefik_bridge
