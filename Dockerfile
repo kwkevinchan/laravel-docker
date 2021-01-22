@@ -26,3 +26,8 @@ WORKDIR /var/www/app/
 
 COPY --from=vendor /var/www/app/ /var/www/app
 COPY --from=vendor /var/www/app/php-docker.ini /usr/local/etc/php/conf.d/php-docker.ini
+COPY --from=vendor /var/www/app/docker-entrypoint.sh /sbin/docker-entrypoint.sh
+
+RUN chmod 700 /sbin/docker-entrypoint.sh
+
+ENTRYPOINT ["/sbin/docker-entrypoint.sh"]
