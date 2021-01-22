@@ -11,7 +11,7 @@ services:
       context: ./
     # image: laravel:demo
     environment:
-      - UPID=501
+      - UPID=1000
 
       - APP_NAME=Laravel
       - APP_ENV=local
@@ -28,12 +28,12 @@ services:
       - DB_USERNAME=root
       - DB_PASSWORD=
 
-      - CACHE_DRIVER=redis
+      - CACHE_DRIVER=file
       - QUEUE_CONNECTION=sync
-      - SESSION_DRIVER=redis
+      - SESSION_DRIVER=file
       - SESSION_LIFETIME=120
 
-      - REDIS_HOST=redis
+      - REDIS_HOST=127.0.0.1
       - REDIS_PASSWORD=null
       - REDIS_PORT=6379
 
